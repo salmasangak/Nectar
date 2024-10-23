@@ -1,29 +1,26 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
-import Icon from 'react-native-vector-icons/Entypo';
 
-const CounterComponent = () => {
-    const [count, setCount] = useState(1);
-
-    const incrementCount = () => {
-        setCount(count + 1);
+const CounterComponent = ({ quantity, onQuantityChange }) => {
+    const handleIncrease = () => {
+        onQuantityChange(quantity + 1);
     };
 
-    const decrementCount = () => {
-        if (count > 0) {
-            setCount(count - 1);
+    const handleDecrease = () => {
+        if (quantity > 1) {
+            onQuantityChange(quantity - 1);
         }
     };
 
     return (
         <View style={styles.counterContainer}>
-            <TouchableOpacity style={styles.button} onPress={decrementCount}>
+            <TouchableOpacity style={styles.button} onPress={handleDecrease}>
                 <Text style={styles.geryText}>-</Text>
             </TouchableOpacity>
             <View style={styles.countTextcon}>
-            <Text style={styles.countText}>{count}</Text>
+            <Text style={styles.countText}>{quantity}</Text>
             </View>
-            <TouchableOpacity style={styles.button} onPress={incrementCount}>
+            <TouchableOpacity style={styles.button} onPress={handleIncrease}>
                 <Text style={styles.greenText}>+</Text>
             </TouchableOpacity>
         </View>

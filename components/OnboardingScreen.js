@@ -49,8 +49,7 @@ const styles = StyleSheet.create({
     fontSize: 44,
     color: '#FFFFFF',
     textAlign: 'center',
-    fontWeight: 'bold',
-    fontFamily: 'Gilroy-Regular',
+    fontFamily: 'Gilroy-Bold',
   },
   logo: {
     width: 42,

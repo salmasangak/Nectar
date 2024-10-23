@@ -5,15 +5,11 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import FeatherIcons from 'react-native-vector-icons/Feather';
 import shopScreen from './ShopSceen';
+import ExploreScreen from './EploreScreen';
+import AccountScreen from './AccountScreen';
+import CartScreen from './CartScreen';
+import FavoriteScreen from './FavoriteScreen';
 
-
-function ProfileScreen() {
-  return (
-    <View style={styles.screen}>
-      <Text>hiiii</Text>
-    </View>
-  );
-}
 
 const Tab = createBottomTabNavigator();
 
@@ -22,7 +18,7 @@ const HomeScreen = () => {
     <Tab.Navigator
       screenOptions={({ route }) => ({
         tabBarIcon: ({ color, size }) => {
-          if (route.name === 'ShopScreen') {
+          if (route.name === 'Shop') {
             return <Ionicons name="storefront-outline" size={size} color={color} />;
           } else if (route.name === 'Explore') {
             return <MaterialIcons name="manage-search" size={30} color={color} />;
@@ -47,16 +43,20 @@ const HomeScreen = () => {
         },
       })}
     >
-    <Tab.Screen name="ShopScreen" options={{ headerShown: false }}
+    <Tab.Screen name="Shop" options={{ headerShown: false }}
        component={shopScreen} />
-      <Tab.Screen name="Explore" component={ProfileScreen} />
-      <Tab.Screen name="Cart" component={ProfileScreen} />
-      <Tab.Screen name="Favourite" component={ProfileScreen} />
-      <Tab.Screen name="Account" component={ProfileScreen} />
+      <Tab.Screen name="Explore" options={{ headerShown: false }}
+       component={ExploreScreen} />
+      <Tab.Screen name="Cart" options={{ headerShown: false }}
+       component={CartScreen} />
+      <Tab.Screen name="Favourite" options={{ headerShown: false }}
+     component={FavoriteScreen} />
+      <Tab.Screen name="Account" options={{ headerShown: false }}
+       component={AccountScreen} />
+
     </Tab.Navigator>
   );
 }
-
 const styles = StyleSheet.create({
   screen: {
     flex: 1,
@@ -66,4 +66,3 @@ const styles = StyleSheet.create({
 });
 
 export default HomeScreen;
-  

@@ -1,16 +1,45 @@
 import React, { useState } from 'react';
 import { Text, View, ScrollView, StyleSheet, ImageBackground, TouchableOpacity, Image } from 'react-native';
-import Icon from 'react-native-vector-icons/Feather';
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import Icon from 'react-native-vector-icons/AntDesign';
 import Entypo from 'react-native-vector-icons/Entypo';
 import CounterComponent from './CounterComponent';
+import { useCart } from './CartContext';
+import { useFavorites } from './FavoritesContext';
 
 const DetailsProduct = ({ navigation }) => {
-    const [isProductDetailVisible, setIsProductDetailVisible] = useState(false);
+    const { addToFavorites, removeFromFavorites, favorites } = useFavorites();
 
-    // Toggle function to handle showing/hiding the product details
-    const toggleProductDetail = () => {
-        setIsProductDetailVisible(!isProductDetailVisible);
+    const [isProductDetailVisible, setIsProductDetailVisible] = useState(false);
+    const [quantity, setQuantity] = useState(1);
+
+    const { addToCart } = useCart();
+
+    const product = {
+        id: 1,
+        name: 'Natural Red Apple',
+        price: 4.99,
+        quantity: 1,
+        details: '1kg, Price',
+        img: require('../assets/imgs/apple.png'),
+    };
+
+    const handleAddToCart = () => {
+        addToCart({ ...product, quantity });
+        navigation.navigate('HomeScreen');
+    };
+
+    const handleQuantityChange = (newQuantity) => {
+        setQuantity(newQuantity);
+    };
+
+    const isFavorite = favorites.some((favItem) => favItem.name === product.name);
+
+    const handleFavoriteToggle = () => {
+        if (isFavorite) {
+            removeFromFavorites(product.name);
+        } else {
+            addToFavorites(product);
+        }
     };
 
     return (
@@ -32,18 +61,26 @@ const DetailsProduct = ({ navigation }) => {
 
             <View style={styles.contentContainer}>
                 <View style={styles.textandfav}>
-                    <Text style={styles.textwithfav}>Natural Red Apple</Text>
-                    <MaterialIcons name="favorite-outline" size={26} />
+                    <Text style={styles.textwithfav}>{product.name}</Text>
+                    <TouchableOpacity onPress={handleFavoriteToggle}>
+                        <Icon
+                            name={isFavorite ? 'heart' : 'hearto'}
+                            size={24}
+                            color= "#7C7C7C"
+                        />
+                    </TouchableOpacity>
                 </View>
-                <Text style={styles.graytext}>1kg, Price</Text>
+                <Text style={styles.graytext}>{product.details}</Text>
                 <View style={styles.textandfav}>
-                    <CounterComponent />
-                    <Text style={styles.textwithfav}>$4.99</Text>
+                    <CounterComponent
+                        quantity={quantity}
+                        onQuantityChange={handleQuantityChange}
+                    />
+                    <Text style={styles.textwithfav}>${product.price.toFixed(2)}</Text>
                 </View>
 
-                {/* Product Detail Section */}
                 <View style={styles.ProductDetailCou}>
-                    <TouchableOpacity style={styles.ProductDetail} onPress={toggleProductDetail}>
+                    <TouchableOpacity style={styles.ProductDetail} onPress={() => setIsProductDetailVisible(!isProductDetailVisible)}>
                         <Text style={styles.ProductDetailText}>Product Detail</Text>
                         <Entypo
                             name={isProductDetailVisible ? 'chevron-small-up' : 'chevron-small-right'}
@@ -74,7 +111,7 @@ const DetailsProduct = ({ navigation }) => {
                     </View>
                 </View>
 
-                <TouchableOpacity style={styles.buttonlast}>
+                <TouchableOpacity style={styles.buttonlast} onPress={handleAddToCart}>
                     <Text style={styles.buttonTextlast}>Add To Basket</Text>
                 </TouchableOpacity>
             </View>
@@ -186,5 +223,4 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
 });
-
 export default DetailsProduct;

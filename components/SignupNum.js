@@ -43,7 +43,6 @@ const SignupNumScreen = ({ navigation }) => {
                     />
                     <Text style={styles.buttonText}>Continue with Google</Text>
                     </TouchableOpacity>
-                    
                     <TouchableOpacity style={styles.facbutton}>
                     <Image
                     source={require('../assets/imgs/flogo.png')}

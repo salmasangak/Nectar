@@ -1,7 +1,22 @@
 import React from 'react';
-import { ScrollView, View, StyleSheet,Image, Text , TextInput ,TouchableOpacity ,ImageBackground} from 'react-native';
+import { ScrollView, View, StyleSheet, Image, Text, TextInput, TouchableOpacity, ImageBackground, Alert } from 'react-native';
+import { useCart } from './CartContext';
 
-export default function ShopScreen({ navigation }) {
+const ShopScreen = ({ navigation }) => {
+    const { addToCart } = useCart();
+
+    const showAlert = (item) => {
+        Alert.alert(
+            'Cart',
+            `Add ${item.name} to cart?`,
+            [
+                { text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel' },
+                { text: 'OK', onPress: () => addToCart(item) },
+            ],
+            { cancelable: false }
+        );
+    };
+
     return (
         <ScrollView contentContainerStyle={styles.scrollContainer}>
         <View style={styles.contentContainer}>
@@ -28,6 +43,7 @@ export default function ShopScreen({ navigation }) {
                         style={styles.searchBox}
                         placeholder="Search Store"
                         placeholderTextColor="#7C7C7C"
+                        onPress={() => navigation.navigate('SearchScreen')}
                     />
                 </View>
 
@@ -43,7 +59,6 @@ export default function ShopScreen({ navigation }) {
                 <ScrollView
                     horizontal={true}
                     style={styles.horizontalScrollContainer}
-                    contentContainerStyle={{ paddingRight: 15 }}
                     showsHorizontalScrollIndicator={false}
                 >
                     <TouchableOpacity style={styles.itemContainer}>
@@ -54,15 +69,19 @@ export default function ShopScreen({ navigation }) {
                         <Text style={styles.item1Text}>Organic Bananas</Text>
                         <Text style={styles.item2Text}>7PCS, Priceg</Text>
                         <View style={styles.buttonandt}>
-                          <Text style={styles.priceText}>$4.99</Text>
-                          <TouchableOpacity style={styles.plusbtn}>
+                        <Text style={styles.priceText}>$4.99</Text>
+                        <TouchableOpacity style={styles.plusbtn}
+                        onPress={() => showAlert({ id: 1, name: 'Organic Bananas', price: 4.99 ,
+                            img: require('../assets/imgs/apple.png'),
+                            details: '7PCS, Priceg'})}
+                        >
                             <Text style={styles.btnText}>+</Text>
-                          </TouchableOpacity>
+                        </TouchableOpacity>
                         </View>
                     </TouchableOpacity>
 
-                    <TouchableOpacity style={styles.itemContainer} 
-                    onPress={() => navigation.navigate('detailsProduct')}>
+                    <TouchableOpacity style={styles.itemContainer}
+                    onPress={() => navigation.navigate('DetailsProduct')}>
                         <Image
                             source={require('../assets/imgs/apple.png')}
                             style={styles.itemImage}
@@ -71,37 +90,10 @@ export default function ShopScreen({ navigation }) {
                         <Text style={styles.item2Text}>1kg, Priceg</Text>
                         <View style={styles.buttonandt}>
                           <Text style={styles.priceText}>$4.99</Text>
-                          <TouchableOpacity style={styles.plusbtn}>
-                            <Text style={styles.btnText}>+</Text>
-                          </TouchableOpacity>
-                        </View>
-                    </TouchableOpacity>
-
-                    <TouchableOpacity style={styles.itemContainer}>
-                        <Image
-                            source={require('../assets/imgs/apple.png')}
-                            style={styles.itemImage}
-                        />
-                        <Text style={styles.item1Text}>Organic Bananas</Text>
-                        <Text style={styles.item2Text}>7PCS, Priceg</Text>
-                        <View style={styles.buttonandt}>
-                          <Text style={styles.priceText}>$4.99</Text>
-                          <TouchableOpacity style={styles.plusbtn}>
-                            <Text style={styles.btnText}>+</Text>
-                          </TouchableOpacity>
-                        </View>
-                    </TouchableOpacity>
-
-                    <TouchableOpacity style={styles.itemContainer}>
-                        <Image
-                            source={require('../assets/imgs/apple.png')}
-                            style={styles.itemImage}
-                        />
-                        <Text style={styles.item1Text}>Organic Bananas</Text>
-                        <Text style={styles.item2Text}>7PCS, Priceg</Text>
-                        <View style={styles.buttonandt}>
-                          <Text style={styles.priceText}>$4.99</Text>
-                          <TouchableOpacity style={styles.plusbtn}>
+                          <TouchableOpacity style={styles.plusbtn}
+                          onPress={() => showAlert({ id: 1, name: 'Red Apple', price: 4.99 ,
+                            img: require('../assets/imgs/apple.png'),
+                             details: '1kg, Priceg'})}>
                             <Text style={styles.btnText}>+</Text>
                           </TouchableOpacity>
                         </View>
@@ -125,11 +117,14 @@ export default function ShopScreen({ navigation }) {
                             source={require('../assets/imgs/flfl.png')}
                             style={styles.itemImage}
                         />
-                        <Text style={styles.item1Text}>Organic Bananas</Text>
+                        <Text style={styles.item1Text}>pepper</Text>
                         <Text style={styles.item2Text}>7PCS, Priceg</Text>
                         <View style={styles.buttonandt}>
                           <Text style={styles.priceText}>$4.99</Text>
-                          <TouchableOpacity style={styles.plusbtn}>
+                          <TouchableOpacity style={styles.plusbtn}
+                           onPress={() => showAlert({ id: 1, name: 'pepper', price: 4.99 ,
+                            img: require('../assets/imgs/flfl.png'),
+                             details: '7PCS, Priceg'})}>
                             <Text style={styles.btnText}>+</Text>
                           </TouchableOpacity>
                         </View>
@@ -140,11 +135,14 @@ export default function ShopScreen({ navigation }) {
                             source={require('../assets/imgs/pngfuel.png')}
                             style={styles.itemImage}
                         />
-                        <Text style={styles.item1Text}>Red Apple</Text>
+                        <Text style={styles.item1Text}>ginger</Text>
                         <Text style={styles.item2Text}>1kg, Priceg</Text>
                         <View style={styles.buttonandt}>
                           <Text style={styles.priceText}>$4.99</Text>
-                          <TouchableOpacity style={styles.plusbtn}>
+                          <TouchableOpacity style={styles.plusbtn}
+                          onPress={() => showAlert({ id: 1, name: 'ginger', price: 4.99 ,
+                            img: require('../assets/imgs/pngfuel.png'),
+                             details: '1kg, Priceg'})}>
                             <Text style={styles.btnText}>+</Text>
                           </TouchableOpacity>
                         </View>
@@ -208,7 +206,10 @@ export default function ShopScreen({ navigation }) {
                         <Text style={styles.item2Text}>1kg, Priceg</Text>
                         <View style={styles.buttonandt}>
                           <Text style={styles.priceText}>$4.99</Text>
-                          <TouchableOpacity style={styles.plusbtn}>
+                          <TouchableOpacity style={styles.plusbtn}
+                           onPress={() => showAlert({ id: 1, name: 'Beef Bone', price: 4.99 ,
+                            img: require('../assets/imgs/BeefBone.png'),
+                             details: '1kg, Priceg'})}>
                             <Text style={styles.btnText}>+</Text>
                           </TouchableOpacity>
                         </View>
@@ -223,7 +224,10 @@ export default function ShopScreen({ navigation }) {
                         <Text style={styles.item2Text}>1kg, Priceg</Text>
                         <View style={styles.buttonandt}>
                           <Text style={styles.priceText}>$4.99</Text>
-                          <TouchableOpacity style={styles.plusbtn}>
+                          <TouchableOpacity style={styles.plusbtn}
+                          onPress={() => showAlert({ id: 1, name: 'Broiler Chicken', price: 4.99 ,
+                            img: require('../assets/imgs/BroilerChicken.png'),
+                             details: '1kg, Priceg'})}>
                             <Text style={styles.btnText}>+</Text>
                           </TouchableOpacity>
                         </View>
@@ -236,7 +240,6 @@ export default function ShopScreen({ navigation }) {
         </ScrollView>
     );
 }
-
 const styles = StyleSheet.create({
     scrollContainer: {
         backgroundColor:'white',
@@ -383,3 +386,4 @@ const styles = StyleSheet.create({
     },
 
 });
+export default ShopScreen;

@@ -1,12 +1,25 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, Image, ImageBackground,ScrollView } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, Image, ImageBackground, ScrollView } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 const LoginScreen = ({ navigation }) => {
   const [secureTextEntry, setSecureTextEntry] = useState(true);
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
 
   const toggleSecureTextEntry = () => {
     setSecureTextEntry(!secureTextEntry);
+  };
+
+  const handleLogin = async () => {
+    try {
+      await AsyncStorage.setItem('userName', name);
+      await AsyncStorage.setItem('userEmail', email);
+      navigation.navigate('HomeScreen');
+    } catch (error) {
+      console.log('Error saving data:', error);
+    }
   };
 
   return (
@@ -16,56 +29,59 @@ const LoginScreen = ({ navigation }) => {
         style={styles.background}
         resizeMode="cover"
       >
-      <ScrollView contentContainerStyle={styles.scrollViewContent}>
-        <View style={styles.contentContainer}>
-          <View style={styles.logoContainer}>
-            <Image
-              source={require('../assets/imgs/mainLogo.png')}
-              style={styles.logo}
-              resizeMode="contain"
-            />
-          </View>
-
-          <Text style={styles.title}>Loging</Text>
-          <Text style={styles.subtitle}>Enter your email and password</Text>
-          <Text style={styles.labelText}>Email</Text>
-          <TextInput
-            style={styles.input}
-            keyboardType="email-address"
-            autoCapitalize="none"
-          />
-          <Text>Password</Text>
-          <View style={styles.passwordContainer}>
-            <TextInput
-              secureTextEntry={secureTextEntry}
-            />
-            <TouchableOpacity onPress={toggleSecureTextEntry} style={styles.iconButton}>
-            <Icon
-                name={secureTextEntry ? 'eye-slash' : 'eye'}
-                size={24}
-                color="#A1A1A1"
-                style={styles.icon}
+        <ScrollView contentContainerStyle={styles.scrollViewContent}>
+          <View style={styles.contentContainer}>
+            <View style={styles.logoContainer}>
+              <Image
+                source={require('../assets/imgs/mainLogo.png')}
+                style={styles.logo}
+                resizeMode="contain"
               />
+            </View>
+
+            <Text style={styles.title}>Loging</Text>
+            <Text style={styles.subtitle}>Enter your email and password</Text>
+            <Text style={styles.labelText}>User Name</Text>
+            <TextInput
+              style={styles.input}
+              value={name}
+              onChangeText={setName}
+              autoCapitalize="none"
+            />
+            <Text style={styles.labelText}>Email</Text>
+            <TextInput
+              style={styles.input}
+              value={email}
+              onChangeText={setEmail}
+              keyboardType="email-address"
+              autoCapitalize="none"
+            />
+            <Text>Password</Text>
+            <View style={styles.passwordContainer}>
+              <TextInput secureTextEntry={secureTextEntry} />
+              <TouchableOpacity onPress={toggleSecureTextEntry} style={styles.iconButton}>
+                <Icon name={secureTextEntry ? 'eye-slash' : 'eye'} size={24} color="#A1A1A1" style={styles.icon} />
+              </TouchableOpacity>
+            </View>
+            <TouchableOpacity style={styles.buttonF}>
+              <Text style={styles.buttonFText}>Forgot Password?</Text>
             </TouchableOpacity>
-          </View>
-          <TouchableOpacity style={styles.buttonF}>
-            <Text style={styles.buttonFText}>Forgot Password?</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('HomeScreen')}>
-            <Text style={styles.buttonText}>Log In</Text>
-          </TouchableOpacity>
-          <View style={styles.row}>
-            <Text style={styles.buttonFText}>Don’t have an account?</Text>
-            <TouchableOpacity style={styles.buttonF} onPress={() => navigation.navigate('SignupNum')}>
-              <Text style={styles.buttonTextG}>Signup</Text>
+            <TouchableOpacity style={styles.button} onPress={handleLogin}>
+              <Text style={styles.buttonText}>Log In</Text>
             </TouchableOpacity>
+            <View style={styles.row}>
+              <Text style={styles.buttonFText}>Don’t have an account?</Text>
+              <TouchableOpacity style={styles.buttonF} onPress={() => navigation.navigate('SignupNum')}>
+                <Text style={styles.buttonTextG}>Signup</Text>
+              </TouchableOpacity>
+            </View>
           </View>
-        </View>
         </ScrollView>
       </ImageBackground>
     </View>
   );
 };
+
 
 const styles = StyleSheet.create({
   container: {
