@@ -50,8 +50,8 @@ const FilteredProductsScreen = ({ route , navigation }) => {
               <Text style={styles.productdescription}>{item.description}</Text>
             </View>
             <View style={styles.row}>
-              <Text style={styles.productPrice}>{item.price}</Text>
-              <TouchableOpacity
+            <Text style={styles.productPrice}>${parseFloat(item.price).toFixed(2)}</Text>
+            <TouchableOpacity
                   style={styles.plusbtn}
                   onPress={() =>
                     showAlert({

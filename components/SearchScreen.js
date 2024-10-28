@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { View, TextInput, FlatList, Text, Image, StyleSheet, TouchableOpacity, Alert } from 'react-native';
-import products from './data';
+import products from './data'; // Ensure your products array has numerical prices
 import { useCart } from './CartContext';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import Icon from 'react-native-vector-icons/Octicons';
@@ -58,20 +58,28 @@ const SearchScreen = ({ navigation, route }) => {
         keyExtractor={(item) => item.id.toString()}
         numColumns={2}
         renderItem={({ item }) => (
-          <View style={styles.productItem}>
+          <View
+            style={[
+              styles.productItem,
+              {
+                width: searchedProducts.length === 1 ? '50%' : '100%',
+                flex: searchedProducts.length === 1 ? 0 : 1,
+              },
+            ]}
+          >
             <Image source={item.image} style={styles.productImage} />
             <View style={styles.productDetails}>
               <Text style={styles.productName}>{item.name}</Text>
               <Text style={styles.productDescription}>{item.description}</Text>
               <View style={styles.row}>
-                <Text style={styles.productPrice}>{item.price}</Text>
+                <Text style={styles.productPrice}>${parseFloat(item.price).toFixed(2)}</Text>
                 <TouchableOpacity
                   style={styles.plusbtn}
                   onPress={() =>
                     showAlert({
                       id: item.id,
                       name: item.name,
-                      price: item.price,
+                      price: parseFloat(item.price),
                       img: item.image,
                       details: item.description,
                     })
@@ -87,6 +95,7 @@ const SearchScreen = ({ navigation, route }) => {
     </View>
   );
 };
+
 
 const styles = StyleSheet.create({
   container: {
@@ -119,7 +128,6 @@ searchBox: {
     fontSize:14,
 },
   productItem: {
-    flex: 1,
     margin: 8,
     borderColor: '#ccc',
     borderWidth: 1,

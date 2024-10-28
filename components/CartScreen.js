@@ -54,7 +54,10 @@ const CartScreen = ({navigation}) => {
                 keyExtractor={(item) => item.name.toString()}
                 renderItem={({ item }) => (
                     <View style={styles.item}>
-                        <Image source={item.img} style={styles.image} />
+                        <View  style={styles.image}>
+                        <Image source={item.img} />
+                        </View>
+
                         <View style={styles.details}>
                             <Text style={styles.itemName}>{item.name}</Text>
                             <Text style={styles.itemDetails}>{item.details}</Text>
@@ -143,9 +146,9 @@ const styles = StyleSheet.create({
     image: {
         marginRight: 20,
         marginLeft:0,
-        alignItems: 'flex-start',
-        justifyContent: 'flex-start',
-
+        alignItems: 'center',
+        justifyContent: 'center',
+        minWidth:100,
     },
     details: {
         flex: 1,
